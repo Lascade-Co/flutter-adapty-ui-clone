@@ -25,7 +25,7 @@ class AdaptyUiFlutterPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         val iniailized = CrossplatformUiHelper.init(flutterPluginBinding.applicationContext)
         if (!iniailized) {
-//            Log.d("AdaptyUiFlutterPlugin", "CrossplatformUiHelper.init failed.")
+           Log.d("AdaptyUiFlutterPlugin", "CrossplatformUiHelper.init failed.")
         }
 
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, CHANNEL_NAME).also { channel ->
