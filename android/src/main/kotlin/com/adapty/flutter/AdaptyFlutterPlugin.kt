@@ -39,10 +39,15 @@ class AdaptyFlutterPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
     private val callHandler = AdaptyCallHandler(crossplatformHelper)
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        onAttachedToEngine(
-            flutterPluginBinding.applicationContext,
-            flutterPluginBinding.binaryMessenger
-        )
+        val iniailized = CrossplatformUiHelper.init(flutterPluginBinding.applicationContext)
+        if (!iniailized) {
+            Log.d("AdaptyUiFlutterPlugin", "CrossplatformUiHelper.init failed.")
+        }
+
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, CHANNEL_NAME).also { channel ->
+            channel.setMethodCallHandler(this)
+        }
+        channel?.let { channel -> callHandler.handleUiEvents(channel) }
     }
 
     override fun onMethodCall(call: MethodCall, result: Result) {
